@@ -308,10 +308,13 @@ jQuery(function($){
         var seconds = now.getSeconds();
         var minutes = now.getMinutes();
         var hours = now.getHours();
+        var days = now.getDate();
       }
       else {
         var timestamp = Date.parse(formatFlipperDate(dateString));
         var remainder = (timestamp - now) / 1000;
+        var days = Math.floor(remainder / 60 / 60 / 24);
+        remainder -= days * 60 * 60 * 24;
         var hours = Math.floor(remainder / 60 / 60);
         remainder -= hours * 60 * 60;
         var minutes = Math.floor(remainder / 60);
@@ -319,17 +322,21 @@ jQuery(function($){
         var seconds = Math.floor(remainder);
       }
 
+      var days_str = days.toString().padStart(3, '0');
       var hours_str = hours.toString().padStart(2, '0');
       var minutes_str = minutes.toString().padStart(2, '0');
       var seconds_str = seconds.toString().padStart(2, '0');
 
       if(animate){
         // one section
+        $flipper.find('.flipper-d').find('.flipper-digit:eq(0)').attr('data-value', days);
         $flipper.find('.flipper-H').find('.flipper-digit:eq(0)').attr('data-value', hours);
         $flipper.find('.flipper-i').find('.flipper-digit:eq(0)').attr('data-value', minutes);
         $flipper.find('.flipper-s').find('.flipper-digit:eq(0)').attr('data-value', seconds);
         
         // two sections
+        $flipper.find('.flipper-dd').find('.flipper-digit:eq(0)').attr('data-value', days_str[1]);
+        $flipper.find('.flipper-dd').find('.flipper-digit:eq(1)').attr('data-value', days_str[2]);
         $flipper.find('.flipper-HH').find('.flipper-digit:eq(0)').attr('data-value', hours_str[0]);
         $flipper.find('.flipper-HH').find('.flipper-digit:eq(1)').attr('data-value', hours_str[1]);
         $flipper.find('.flipper-ii').find('.flipper-digit:eq(0)').attr('data-value', minutes_str[0]);
@@ -337,17 +344,24 @@ jQuery(function($){
         $flipper.find('.flipper-ss').find('.flipper-digit:eq(0)').attr('data-value', seconds_str[0]);
         $flipper.find('.flipper-ss').find('.flipper-digit:eq(1)').attr('data-value', seconds_str[1]);
         
+        // three sections
+        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(0)').attr('data-value', days_str[0]);
+        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(1)').attr('data-value', days_str[1]);
+        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(2)').attr('data-value', days_str[2]);
       }
       else {
         $flipper.find('.flipper-group .flipper-digit').removeAttr('data-value');
         $flipper.find('.digit-face.active').removeClass('active');
         
         // one section
+        $flipper.find('.flipper-d .flipper-digit:eq(0) .digit-face:contains(' + days + ')').addClass('active');
         $flipper.find('.flipper-H .flipper-digit:eq(0) .digit-face:contains(' + hours + ')').addClass('active');
         $flipper.find('.flipper-i .flipper-digit:eq(0) .digit-face:contains(' + minutes + ')').addClass('active');
         $flipper.find('.flipper-s .flipper-digit:eq(0) .digit-face:contains(' + seconds + ')').addClass('active');
         
         // two sections
+        $flipper.find('.flipper-dd .flipper-digit:eq(0) .digit-face:contains(' + days_str[1] + ')').addClass('active');
+        $flipper.find('.flipper-dd .flipper-digit:eq(1) .digit-face:contains(' + days_str[2] + ')').addClass('active');
         $flipper.find('.flipper-HH .flipper-digit:eq(0) .digit-face:contains(' + hours_str[0] + ')').addClass('active');
         $flipper.find('.flipper-HH .flipper-digit:eq(1) .digit-face:contains(' + hours_str[1] + ')').addClass('active');
         $flipper.find('.flipper-ii .flipper-digit:eq(0) .digit-face:contains(' + minutes_str[0] + ')').addClass('active');
@@ -355,6 +369,10 @@ jQuery(function($){
         $flipper.find('.flipper-ss .flipper-digit:eq(0) .digit-face:contains(' + seconds_str[0] + ')').addClass('active');
         $flipper.find('.flipper-ss .flipper-digit:eq(1) .digit-face:contains(' + seconds_str[1] + ')').addClass('active');
         
+        // three sections
+        $flipper.find('.flipper-ddd .flipper-digit:eq(0) .digit-face:contains(' + days_str[0] + ')').addClass('active');
+        $flipper.find('.flipper-ddd .flipper-digit:eq(1) .digit-face:contains(' + days_str[1] + ')').addClass('active');
+        $flipper.find('.flipper-ddd .flipper-digit:eq(2) .digit-face:contains(' + days_str[2] + ')').addClass('active');
         addAppearance($flipper);
       }
 
@@ -362,3 +380,4 @@ jQuery(function($){
   };
 
 });
+ChatGPT
