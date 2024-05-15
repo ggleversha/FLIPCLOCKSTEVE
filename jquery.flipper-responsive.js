@@ -1,60 +1,6 @@
 jQuery(function($){
 
-  // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/repeat
-  if (!String.prototype.repeat) {
-    String.prototype.repeat = function(count) {
-      'use strict';
-      if (this == null) {
-        throw new TypeError('can\'t convert ' + this + ' to object');
-      }
-      var str = '' + this;
-      count = +count;
-      if (count != count) {
-        count = 0;
-      }
-      if (count < 0) {
-        throw new RangeError('repeat count must be non-negative');
-      }
-      if (count == Infinity) {
-        throw new RangeError('repeat count must be less than infinity');
-      }
-      count = Math.floor(count);
-      if (str.length == 0 || count == 0) {
-        return '';
-      }
-      // Обеспечение того, что count является 31-битным целым числом, позволяет нам значительно
-      // соптимизировать главную часть функции. Впрочем, большинство современных (на август
-      // 2014 года) браузеров не обрабатывают строки, длиннее 1 << 28 символов, так что:
-      if (str.length * count >= 1 << 28) {
-        throw new RangeError('repeat count must not overflow maximum string size');
-      }
-      var rpt = '';
-      for (var i = 0; i < count; i++) {
-        rpt += str;
-      }
-      return rpt;
-    }
-  }
-
-  // https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
-  if (!String.prototype.padStart) {
-    String.prototype.padStart = function padStart(targetLength,padString) {
-      targetLength = targetLength>>0; //truncate if number or convert non-number to 0;
-      padString = String((typeof padString !== 'undefined' ? padString : ' '));
-      if (this.length > targetLength) {
-        return String(this);
-      }
-      else {
-        targetLength = targetLength-this.length;
-        if (targetLength > padString.length) {
-          padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
-        }
-        return padString.slice(0,targetLength) + String(this);
-      }
-    };
-  }
-
+  // Function to initialize the flipper plugin
   $.fn.flipper = function(action, options) {
     var $flipper = $(this);
     var action = action || 'init';
@@ -343,40 +289,27 @@ jQuery(function($){
         $flipper.find('.flipper-ii').find('.flipper-digit:eq(1)').attr('data-value', minutes_str[1]);
         $flipper.find('.flipper-ss').find('.flipper-digit:eq(0)').attr('data-value', seconds_str[0]);
         $flipper.find('.flipper-ss').find('.flipper-digit:eq(1)').attr('data-value', seconds_str[1]);
-        
-        // three sections
-        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(0)').attr('data-value', days_str[0]);
-        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(1)').attr('data-value', days_str[1]);
-        $flipper.find('.flipper-ddd').find('.flipper-digit:eq(2)').attr('data-value', days_str[2]);
       }
       else {
-        $flipper.find('.flipper-group .flipper-digit').removeAttr('data-value');
-        $flipper.find('.digit-face.active').removeClass('active');
-        
         // one section
-        $flipper.find('.flipper-d .flipper-digit:eq(0) .digit-face:contains(' + days + ')').addClass('active');
-        $flipper.find('.flipper-H .flipper-digit:eq(0) .digit-face:contains(' + hours + ')').addClass('active');
-        $flipper.find('.flipper-i .flipper-digit:eq(0) .digit-face:contains(' + minutes + ')').addClass('active');
-        $flipper.find('.flipper-s .flipper-digit:eq(0) .digit-face:contains(' + seconds + ')').addClass('active');
-        
+        setDigitValue(0, days);
+        setDigitValue(1, hours);
+        setDigitValue(2, minutes);
+        setDigitValue(3, seconds);
         // two sections
-        $flipper.find('.flipper-dd .flipper-digit:eq(0) .digit-face:contains(' + days_str[1] + ')').addClass('active');
-        $flipper.find('.flipper-dd .flipper-digit:eq(1) .digit-face:contains(' + days_str[2] + ')').addClass('active');
-        $flipper.find('.flipper-HH .flipper-digit:eq(0) .digit-face:contains(' + hours_str[0] + ')').addClass('active');
-        $flipper.find('.flipper-HH .flipper-digit:eq(1) .digit-face:contains(' + hours_str[1] + ')').addClass('active');
-        $flipper.find('.flipper-ii .flipper-digit:eq(0) .digit-face:contains(' + minutes_str[0] + ')').addClass('active');
-        $flipper.find('.flipper-ii .flipper-digit:eq(1) .digit-face:contains(' + minutes_str[1] + ')').addClass('active');
-        $flipper.find('.flipper-ss .flipper-digit:eq(0) .digit-face:contains(' + seconds_str[0] + ')').addClass('active');
-        $flipper.find('.flipper-ss .flipper-digit:eq(1) .digit-face:contains(' + seconds_str[1] + ')').addClass('active');
-        
-        // three sections
-        $flipper.find('.flipper-ddd .flipper-digit:eq(0) .digit-face:contains(' + days_str[0] + ')').addClass('active');
-        $flipper.find('.flipper-ddd .flipper-digit:eq(1) .digit-face:contains(' + days_str[1] + ')').addClass('active');
-        $flipper.find('.flipper-ddd .flipper-digit:eq(2) .digit-face:contains(' + days_str[2] + ')').addClass('active');
-        addAppearance($flipper);
+        setDigitValue(4, days_str[1]);
+        setDigitValue(5, days_str[2]);
+        setDigitValue(6, hours_str[0]);
+        setDigitValue(7, hours_str[1]);
+        setDigitValue(8, minutes_str[0]);
+        setDigitValue(9, minutes_str[1]);
+        setDigitValue(10, seconds_str[0]);
+        setDigitValue(11, seconds_str[1]);
       }
-
     }
-  };
+  }
+
+  // Initialize flipper plugin
+  $('.flipper').flipper();
 
 });
