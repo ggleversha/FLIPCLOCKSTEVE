@@ -6,218 +6,289 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <style>
-  body {
-    background: #333;
-    font-family: sans-serif;
-  }
+      body {
+  background: #333;
+  font-family: sans-serif;
+}
 
-  #clock-container {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    padding: 20px;
-    background: grey;
-    border-radius: 10px;
-    z-index: 9999; /* Ensure it's on top of other elements */
-  }
+#myFlipper {
+  position: fixed;
+  top: 5em;
+  left: 0;
+  width: 100%;
+  z-index: 9999; /* Ensure it's on top of other elements */
+}
 
-  .flipper {
-    color: #333;
-    display: block;
-    font-size: 50px;
-    line-height: 100%;
-    padding: 0;
-    margin: 0;
-    height: 1.7em;
-  }
-  .flipper.flipper-invisible {
-    font-size: 0px !important;
-  }
+.flipper {
+  color: #333;
+  display: block;
+  font-size: 50px;
+  line-height: 100%;
+  padding: 0;
+  margin: 0;
+  height: 1.7em;
+}
+.flipper.flipper-invisible {
+  font-size: 0px !important;
+}
 
-  .flipper-group {
-    position: relative;
-    white-space: nowrap;
-    display: block;
-    float: left;
-    padding: 0;
-    margin: 0;
-  }
-  .flipper-group label {
-    position: absolute;
-    color: #fff;
-    font-size: 20%;
-    top: 100%;
-    line-height: 1em;
-    left: 50%;
-    transform: translate(-50%, 0);
-    text-align: center;
-    padding-top: .5em;
-  }
+.flipper-group {
+  position: relative;
+  white-space: nowrap;
+  display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+.flipper-group label {
+  position: absolute;
+  color: #fff;
+  font-size: 20%;
+  top: 100%;
+  line-height: 1em;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  text-align: center;
+  padding-top: .5em;
+}
 
-  .flipper-digit {
-    white-space: nowrap;
-    position: relative;
-    padding: 0;
-    margin: 0;
-    display: inline-block;
-    float: left;
-    height: 1.2em;
-    overflow-y: hidden;
-  }
-  .flipper-digit span {
-    font-size: 25%;
-  }
+.flipper-digit {
+  white-space: nowrap;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  float: left;
+  height: 1.2em;
+  overflow-y: hidden;
+}
+.flipper-digit span {
+  font-size: 25%;
+}
 
-  .flipper-delimiter {
-    white-space: nowrap;
-    display: block;
-    float: left;
-    padding: 0;
-    margin: 0;
-    color: #fff;
-    min-width: .1em;
-    display: block;
-    padding-top: 0.1em;
-    padding-bottom: 0.1em;
-    line-height: 1em;
-  }
+.flipper-delimiter {
+  white-space: nowrap;
+  display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  min-width: .1em;
+  white-space: nowrap;
+  display: block;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  line-height: 1em;
+}
 
-  .digit-face,
-  .digit-next,
-  .digit-top,
-  .digit-top2,
-  .digit-bottom {
-    display: block;
-    position: relative;
-    border-radius: 0.1em;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 8;
-    padding: 0.1em;
-    box-sizing: border-box;
-    text-align: center;
-  }
+.digit-face {
+  display: block;
+  visibility: hidden;
+  position: relative;
+  border-radius: 0.1em;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  box-sizing: border-box;
+  text-align: center;
+}
 
-  .digit-face {
-    visibility: hidden;
-  }
+.digit-next {
+  display: block;
+  position: relative;
+  border-radius: 0.1em;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  height: 1.2em;
+  background: #fff;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
 
-  .digit-next,
-  .digit-top {
-    background: #fff;
-    height: 1.2em;
-    user-select: none;
-  }
+.digit-top {
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  pointer-events: none;
+  overflow: hidden;
+  position: absolute;
+  background: #fff;
+  padding-top: 0.1em;
+  padding-bottom: 0;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  border-top-left-radius: 0.1em;
+  border-top-right-radius: 0.1em;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  transition: background 0s linear, -webkit-transform 0s linear;
+  transition: transform 0s linear, background 0s linear;
+  transition: transform 0s linear, background 0s linear, -webkit-transform 0s linear;
+  -webkit-transform-origin: 0 0.6em 0 !important;
+          transform-origin: 0 0.6em 0 !important;
+  -webkit-transform-style: preserve-3d !important;
+          transform-style: preserve-3d !important;
+  z-index: 20;
+}
+.digit-top.r {
+  transition: background 0.2s linear, -webkit-transform 0.2s linear;
+  transition: transform 0.2s linear, background 0.2s linear;
+  transition: transform 0.2s linear, background 0.2s linear, -webkit-transform 0.2s linear;
+  -webkit-transform: rotateX(90deg);
+          transform: rotateX(90deg);
+  background: #cccccc;
+}
 
-  .digit-top {
-    z-index: 10;
-    height: 50%;
-    backface-visibility: hidden;
-    pointer-events: none;
-    overflow: hidden;
-    transition: transform 0s linear, background 0s linear;
-    transform-origin: 0 0.6em 0 !important;
-    transform-style: preserve-3d !important;
-    z-index: 20;
-  }
-  .digit-top.r {
-    transition: transform 0.2s linear, background 0.2s linear;
-    transform: rotateX(90deg);
-    background: #cccccc;
-  }
+.digit-top2 {
+  visibility: hidden;
+  position: absolute;
+  height: 50%;
+  left: 0;
+  right: 0;
+  background: #cccccc;
+  transition: -webkit-transform 0.2s linear;
+  transition: transform 0.2s linear;
+  transition: transform 0.2s linear, -webkit-transform 0.2s linear;
+  line-height: 0em !important;
+  top: 50% !important;
+  bottom: auto !important;
+  padding-top: 0;
+  padding-bottom: 0.1em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  border-bottom-left-radius: 0.1em;
+  border-bottom-right-radius: 0.1em;
+  overflow: hidden;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  transition: background 0s linear, -webkit-transform 0s linear;
+  transition: transform 0s linear, background 0s linear;
+  transition: transform 0s linear, background 0s linear, -webkit-transform 0s linear;
+  -webkit-transform: rotateX(-90deg);
+          transform: rotateX(-90deg);
+  -webkit-transform-style: preserve-3d !important;
+          transform-style: preserve-3d !important;
+  -webkit-transform-origin: 0 0 0 !important;
+          transform-origin: 0 0 0 !important;
+  z-index: 20;
+}
+.digit-top2.r {
+  visibility: visible;
+  transition: background 0.2s linear 0.2s, -webkit-transform 0.2s linear 0.2s;
+  transition: transform 0.2s linear 0.2s, background 0.2s linear 0.2s;
+  transition: transform 0.2s linear 0.2s, background 0.2s linear 0.2s, -webkit-transform 0.2s linear 0.2s;
+  -webkit-transform: rotateX(0deg);
+          transform: rotateX(0deg);
+  background: #fff;
+}
 
-  .digit-top2 {
-    visibility: hidden;
-    height: 50%;
-    background: #cccccc;
-    transition: transform 0.2s linear;
-    line-height: 0em !important;
-    top: 50% !important;
-    padding: 0;
-    border-bottom-left-radius: 0.1em;
-    border-bottom-right-radius: 0.1em;
-    overflow: hidden;
-    transform: rotateX(-90deg);
-    transform-style: preserve-3d !important;
-    transform-origin: 0 0 0 !important;
-    z-index: 20;
-  }
-  .digit-top2.r {
-    visibility: visible;
-    transition: transform 0.2s linear 0.2s, background 0.2s linear 0.2s;
-    transform: rotateX(0deg);
-    background: #fff;
-  }
+.digit-bottom {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  overflow: hidden;
+  background: #fff;
+  height: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  line-height: 0em;
+  padding-top: 0;
+  padding-bottom: 0.1em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  border-bottom-left-radius: 0.1em;
+  border-bottom-right-radius: 0.1em;
+  box-sizing: border-box;
+  text-align: center;
+  transition: none;
+}
+.digit-bottom.r {
+  transition: background 0.2s linear;
+  background: #cccccc;
+}
 
-  .digit-bottom {
-    backface-visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    overflow: hidden;
-    background: #fff;
-    height: 50%;
-    bottom: 0;
-    z-index: 9;
-    line-height: 0em;
-    transition: none;
-  }
-  .digit-bottom.r {
-    transition: background 0.2s linear;
-    background: #cccccc;
-  }
+.flipper-digit:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.5);
+  top: 50%;
+  display: block;
+  z-index: 30;
+  left: 0;
+  right: 0;
+}
 
-  .flipper-digit:after {
-    content: "";
-    position: absolute;
-    height: 2px;
-    background: rgba(0, 0, 0, 0.5);
-    top: 50%;
-    display: block;
-    z-index: 30;
-    left: 0;
-    right: 0;
-  }
+.flipper-dark {
+  color: #fff;
+}
+.flipper-dark .flipper-delimiter {
+  color: #333;
+}
+.flipper-dark .digit-next {
+  background: #333;
+}
+.flipper-dark .digit-top {
+  background: #333;
+}
+.flipper-dark .digit-top.r {
+  background: black;
+}
+.flipper-dark .digit-top2 {
+  background: black;
+}
+.flipper-dark .digit-top2.r {
+  background: #333;
+}
+.flipper-dark .digit-bottom {
+  background: #333;
+}
 
-  .flipper-dark {
-    color: #fff;
-  }
-  .flipper-dark .flipper-delimiter {
-    color: #333;
-  }
-  .flipper-dark .digit-next {
-    background: #333;
-  }
-  .flipper-dark .digit-top {
-    background: #333;
-  }
-  .flipper-dark .digit-top.r {
-    background: black;
-  }
-  .flipper-dark .digit-top2 {
-    background: black;
-  }
-  .flipper-dark .digit-top2.r {
-    background: #333;
-  }
-  .flipper-dark .digit-bottom {
-    background: #333;
-  }
+.flipper-dark-labels .flipper-group label {
+  color: #333;
+  
+}
 
-  .flipper-dark-labels .flipper-group label {
-    color: #333;
-  }
+.time-remaining {
+  position: fixed;
+  top: calc(100% - 30px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+}
 
-  .time-remaining {
-    position: fixed;
-    top: calc(100% - 30px);
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-  }
 </style>
 </head>
 
@@ -235,9 +306,8 @@ google_ad_height = 90;
 <script type="text/javascript"
 src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script></div>
-<div id="clock-container">
-  <div class="flipper" data-reverse="true" data-datetime="2024-05-31 24:00:00" data-template="HH|ii|ss" data-labels="Hours|Minutes|Seconds" id="myFlipper"></div>
-</div>
+<div class="flipper" data-reverse="true" data-datetime="2024-05-31 24:00:00" data-template="HH|ii|ss" data-labels="Hours|Minutes|Seconds" id="myFlipper"></div>
+
 
 <div class="time-remaining">TIME REMAINING</div> <!-- New div for "TIME REMAINING" -->
 
@@ -265,9 +335,9 @@ src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
 <script src="jquery.flipper-responsive.js"></script>
 <script>
   jQuery(function ($) {
-    $('#myFlipper').flipper('init');
-    $('#modalFlipper').flipper('init');
-  });
+  $('#myFlipper').flipper('init');
+  $('#modalFlipper').flipper('init');
+});
 </script>
 <script type="text/javascript">
 
